@@ -48,7 +48,7 @@ export const updateUsers = (req, res) => {
   const { name, email, phone, password, hobby, address } = req.body;
   const { id } = req.params;
   const sql =
-    "UPDATE user SET name=?, email=?, phone=?, password=?, hobby=?, address=? WHERE user_id=?";
+    "UPDATE user SET name=?, email=?, phone=?, password=?, hobby=?, address=? WHERE id=?";
   const values = [name, email, phone, password, hobby, address, id]; // Include id at the end
 
   db.query(sql, values, (err, result) => {
@@ -71,7 +71,7 @@ export const deleteUser = (req, res) => {
   const { id } = req.params;
   console.log(id);
 
-  const sql = "delete from user where user_id=?";
+  const sql = "delete from user where id=?";
   db.query(sql, [id], (err, result) => {
     if (err) {
       res.send({ statusCode: 300, message: "something went wrong" });
@@ -89,6 +89,18 @@ export const getAllUsers = (req, res) => {
     } else {
       res.send(data);
     }
+  });
+};
+
+export const getSingleUser = (req, res) => {
+  const { id } = req.params;
+  console.log("ID: ", id);
+
+  const sql = "select * from user where id=?";
+
+  db.query(sql, [id], (err, result) => {
+    if (err) return res.status(500).send(err);
+    return res.status(200).send(result[0]);
   });
 };
 

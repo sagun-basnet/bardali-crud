@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Table = () => {
   const [data, setData] = useState([]);
-  console.log(data)
+  // console.log(data)
 
 
   // wait for the data and go in the next line of code
@@ -25,12 +25,15 @@ const Table = () => {
   // using [] helps in getting only one data instead of infinite
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [data])
 
 
-  const handleUpdate = (id) => {
-
-
+  const handleDelete = (id) => {
+    axios.delete(`http://localhost:5500/api/deleteUser/${id}`).then((res) => {
+      console.log(res);
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
 
@@ -65,9 +68,9 @@ const Table = () => {
               <td className='border-2 border-black'>{item.hobby}</td>
               <td className='border-2 border-black flex items-center justify-center gap-4'>
                 <Link to={`update/${item.id}`}>
-                  <button className='bg-green-400 p-2 px-4 rounded-md' onClick={() => handleUpdate(item.id)}>Update</button>
+                  <button className='bg-green-400 p-2 px-4 rounded-md' >Update</button>
                 </Link>
-                <button className='bg-red-400 p-2 px-4 rounded-md'>Delete</button>
+                <button className='bg-red-400 p-2 px-4 rounded-md' onClick={() => handleDelete(item.id)}>Delete</button>
               </td>
             </tr>))}
         </tbody>
